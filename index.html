@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MG Trip Planners — Travel Specialists</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #C9A84C;
+    --gold-light: #E8C97A;
+    --dark: #0D1117;
+    --dark2: #151C26;
+    --dark3: #1E2A38;
+    --cream: #F5F0E8;
+    --text: #E8E0D0;
+    --muted: #8A9BAD;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth ; scroll-padding-top: 80px; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--dark); color: var(--text); overflow-x: hidden; }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.2rem 4rem;
+    background: rgba(13,17,23,0.97);
+    backdrop-filter: blur(6px);
+    border-bottom: 0.5px solid rgba(201,168,76,0.12);
+  }
+  .nav-logo { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; font-weight: 600; color: var(--gold); letter-spacing: 0.03em; text-decoration: none; }
+  .nav-logo span { color: var(--text); font-weight: 300; }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a { color: var(--muted); text-decoration: none; font-size: 0.82rem; letter-spacing: 0.08em; text-transform: uppercase; transition: color 0.25s; }
+  .nav-links a:hover { color: var(--gold); }
+  .nav-cta { background: transparent; border: 1px solid var(--gold); color: var(--gold); padding: 0.5rem 1.4rem; font-size: 0.8rem; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; transition: all 0.25s; font-family: 'DM Sans', sans-serif; text-decoration: none; }
+  .nav-cta:hover { background: var(--gold); color: var(--dark); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    background: linear-gradient(to bottom, rgba(13,17,23,0.55) 0%, rgba(13,17,23,0.3) 50%, rgba(13,17,23,0.9) 100%),
+      url('https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=1800&q=80') center/cover no-repeat;
+    display: flex; align-items: center; justify-content: center; text-align: center; padding: 2rem; position: relative;
+  }
+  .hero-badge { display: inline-block; font-size: 0.72rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold); border: 1px solid rgba(201,168,76,0.4); padding: 0.4rem 1.2rem; margin-bottom: 1.5rem; animation: fadeUp 0.7s ease both; }
+  .hero h1 { font-family: 'Cormorant Garamond', serif; font-size: clamp(3rem, 7vw, 6rem); font-weight: 300; line-height: 1.05; color: var(--cream); margin-bottom: 1.5rem; animation: fadeUp 0.7s 0.15s ease both; }
+  .hero h1 em { font-style: italic; color: var(--gold); }
+  .hero p { font-size: 1.05rem; color: var(--muted); max-width: 500px; margin: 0 auto 2.5rem; line-height: 1.7; animation: fadeUp 0.7s 0.3s ease both; }
+  .hero-btns { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; animation: fadeUp 0.7s 0.45s ease both; }
+  .btn-primary { background: var(--gold); color: var(--dark); padding: 0.85rem 2.2rem; font-size: 0.85rem; letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none; font-weight: 500; transition: all 0.25s; border: none; cursor: pointer; font-family: 'DM Sans', sans-serif; }
+  .btn-primary:hover { background: var(--gold-light); transform: translateY(-2px); }
+  .btn-outline { background: transparent; color: var(--cream); padding: 0.85rem 2.2rem; font-size: 0.85rem; letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none; font-weight: 400; border: 1px solid rgba(245,240,232,0.3); transition: all 0.25s; }
+  .btn-outline:hover { border-color: var(--cream); }
+  .hero-scroll { position: absolute; bottom: 2.5rem; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 0.5rem; animation: fadeUp 0.7s 0.6s ease both; }
+  .hero-scroll span { font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); }
+  .scroll-line { width: 1px; height: 40px; background: linear-gradient(to bottom, var(--gold), transparent); animation: scrollPulse 1.8s ease-in-out infinite; }
+
+  /* STATS */
+  .stats { background: var(--dark2); border-top: 1px solid rgba(201,168,76,0.15); border-bottom: 1px solid rgba(201,168,76,0.15); display: flex; flex-wrap: wrap; }
+  .stat-item { flex: 1; min-width: 150px; padding: 2.2rem 1.5rem; text-align: center; border-right: 1px solid rgba(201,168,76,0.1); }
+  .stat-item:last-child { border-right: none; }
+  .stat-num { font-family: 'Cormorant Garamond', serif; font-size: 2.4rem; font-weight: 500; color: var(--gold); display: block; line-height: 1; }
+  .stat-label { font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-top: 0.4rem; display: block; }
+
+  /* SECTION BASE */
+  section { padding: 6rem 2rem; }
+  .section-inner { max-width: 1100px; margin: 0 auto; }
+  .section-tag { font-size: 0.7rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.75rem; display: block; }
+  .section-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(2rem, 4vw, 3rem); font-weight: 300; color: var(--cream); line-height: 1.15; margin-bottom: 1rem; }
+  .section-title em { font-style: italic; color: var(--gold); }
+  .section-sub { font-size: 0.95rem; color: var(--muted); max-width: 540px; line-height: 1.7; margin-bottom: 3rem; }
+
+  /* SERVICES GRID */
+  #services { background: var(--dark); }
+  .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5px; margin-top: 3rem; border: 1.5px solid rgba(201,168,76,0.12); }
+  .service-card { background: var(--dark2); padding: 2.5rem 2rem; transition: background 0.3s; position: relative; overflow: hidden; cursor: pointer; }
+  .service-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(to right, transparent, var(--gold), transparent); opacity: 0; transition: opacity 0.3s; }
+  .service-card:hover { background: var(--dark3); }
+  .service-card:hover::before { opacity: 1; }
+  .service-icon { width: 48px; height: 48px; margin-bottom: 1.5rem; display: flex; align-items: center; justify-content: center; font-size: 1.6rem; }
+  .service-card h3 { font-family: 'Cormorant Garamond', serif; font-size: 1.25rem; font-weight: 500; color: var(--cream); margin-bottom: 0.6rem; }
+  .service-card p { font-size: 0.85rem; color: var(--muted); line-height: 1.65; }
+  .service-arrow { display: inline-block; margin-top: 1.2rem; font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold); opacity: 0; transition: opacity 0.25s; text-decoration: none; }
+  .service-card:hover .service-arrow { opacity: 1; }
+
+  /* SERVICE DETAIL SECTIONS */
+  .service-detail { padding: 6rem 2rem; }
+  .sd-odd { background: var(--dark2); }
+  .sd-even { background: var(--dark); }
+  .service-detail-inner { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; }
+  .service-detail-img-wrap { position: relative; }
+  .service-detail-img-wrap::after { content: ''; position: absolute; inset: -10px; border: 1px solid rgba(201,168,76,0.15); pointer-events: none; z-index: 0; }
+  .service-detail-img { width: 100%; height: auto; aspect-ratio: 16/10; object-fit: cover; display: block; position: relative; z-index: 1; }
+  .sd-label { font-size: 0.7rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.6rem; display: flex; align-items: center; gap: 0.6rem; }
+  .sd-label::before { content: ''; display: inline-block; width: 24px; height: 1px; background: var(--gold); }
+  .service-detail h2 { font-family: 'Cormorant Garamond', serif; font-size: clamp(1.8rem, 3vw, 2.5rem); font-weight: 300; color: var(--cream); line-height: 1.2; margin-bottom: 1rem; }
+  .service-detail h2 em { font-style: italic; color: var(--gold); }
+  .sd-desc { font-size: 0.92rem; color: var(--muted); line-height: 1.8; margin-bottom: 1.5rem; }
+  .sd-features { list-style: none; margin-bottom: 2rem; }
+  .sd-features li { font-size: 0.85rem; color: var(--text); padding: 0.5rem 0; border-bottom: 0.5px solid rgba(201,168,76,0.08); display: flex; align-items: flex-start; gap: 0.75rem; }
+  .sd-features li::before { content: '✦'; color: var(--gold); font-size: 0.55rem; margin-top: 0.3rem; flex-shrink: 0; }
+  .btn-gold { display: inline-block; padding: 0.75rem 1.8rem; border: 1px solid var(--gold); color: var(--gold); font-size: 0.8rem; letter-spacing: 0.12em; text-transform: uppercase; text-decoration: none; transition: all 0.25s; font-family: 'DM Sans', sans-serif; }
+  .btn-gold:hover { background: var(--gold); color: var(--dark); }
+
+  /* DIVIDER */
+  .gold-divider { width: 100%; height: 1px; background: linear-gradient(to right, transparent, rgba(201,168,76,0.25), transparent); }
+
+  /* ABOUT */
+  #about { background: var(--dark2); }
+  .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; }
+  .about-img-wrap { position: relative; }
+  .about-img { width: 100%; aspect-ratio: 4/5; object-fit: cover; display: block; }
+  .about-img-accent { position: absolute; bottom: -1.5rem; right: -1.5rem; width: 200px; height: 200px; background: var(--dark3); border: 1px solid rgba(201,168,76,0.2); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 1.5rem; }
+  .about-img-accent span:first-child { font-family: 'Cormorant Garamond', serif; font-size: 2.5rem; font-weight: 500; color: var(--gold); line-height: 1; }
+  .about-img-accent span:last-child { font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-top: 0.4rem; }
+  .about-team { margin-top: 2.5rem; padding-top: 2rem; border-top: 1px solid rgba(201,168,76,0.15); }
+  .team-row { display: flex; gap: 2rem; flex-wrap: wrap; }
+  .team-member h4 { font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; font-weight: 500; color: var(--cream); }
+  .team-member p { font-size: 0.78rem; color: var(--gold); letter-spacing: 0.06em; margin-top: 0.1rem; }
+  .team-member a { font-size: 0.78rem; color: var(--muted); text-decoration: none; display: block; margin-top: 0.2rem; transition: color 0.2s; }
+  .team-member a:hover { color: var(--gold); }
+
+  /* QUOTE */
+  #quote { background: var(--dark); }
+  .quote-wrap { display: grid; grid-template-columns: 1fr 1.4fr; gap: 5rem; align-items: start; }
+  .contact-item { display: flex; gap: 0.75rem; margin-bottom: 1.2rem; align-items: flex-start; }
+  .contact-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--gold); margin-top: 0.3rem; flex-shrink: 0; }
+  .contact-item span { font-size: 0.85rem; color: var(--muted); line-height: 1.5; }
+  .contact-item strong { color: var(--cream); display: block; font-weight: 400; }
+  .quote-form { background: var(--dark2); border: 1px solid rgba(201,168,76,0.12); padding: 2.5rem; }
+  .form-title { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; font-weight: 400; color: var(--cream); margin-bottom: 0.3rem; }
+  .form-sub { font-size: 0.82rem; color: var(--muted); margin-bottom: 2rem; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .form-group { margin-bottom: 1.2rem; }
+  .form-group label { display: block; font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.5rem; }
+  .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 0.75rem 1rem; background: var(--dark3); border: 1px solid rgba(201,168,76,0.12); color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 0.9rem; outline: none; transition: border-color 0.25s; appearance: none; -webkit-appearance: none; }
+  .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--gold); }
+  .form-group select option { background: var(--dark3); }
+  .form-group textarea { resize: vertical; min-height: 100px; }
+  .form-check { display: flex; gap: 0.6rem; align-items: flex-start; margin-bottom: 1.5rem; }
+  .form-check input[type="checkbox"] { margin-top: 3px; accent-color: var(--gold); cursor: pointer; }
+  .form-check label { font-size: 0.8rem; color: var(--muted); line-height: 1.5; }
+  .submit-btn { width: 100%; padding: 1rem; background: var(--gold); color: var(--dark); font-family: 'DM Sans', sans-serif; font-size: 0.85rem; letter-spacing: 0.15em; text-transform: uppercase; font-weight: 500; border: none; cursor: pointer; transition: all 0.25s; }
+  .submit-btn:hover { background: var(--gold-light); }
+  .form-success { display: none; text-align: center; padding: 3rem 1rem; }
+  .form-success .checkmark { font-size: 2.5rem; margin-bottom: 1rem; }
+  .form-success h3 { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; font-weight: 400; color: var(--cream); margin-bottom: 0.5rem; }
+  .form-success p { font-size: 0.85rem; color: var(--muted); }
+
+  /* FOOTER */
+  footer { background: var(--dark2); border-top: 1px solid rgba(201,168,76,0.12); padding: 3rem 2rem 1.5rem; }
+  .footer-inner { max-width: 1100px; margin: 0 auto; }
+  .footer-top { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 2rem; margin-bottom: 2.5rem; }
+  .footer-logo { font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; font-weight: 600; color: var(--gold); }
+  .footer-logo span { color: var(--text); font-weight: 300; }
+  .footer-logo small { display: block; font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); font-family: 'DM Sans', sans-serif; margin-top: 0.2rem; }
+  .footer-links { display: flex; gap: 1.5rem; flex-wrap: wrap; }
+  .footer-links a { font-size: 0.82rem; color: var(--muted); text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--gold); }
+  .footer-bottom { border-top: 1px solid rgba(201,168,76,0.08); padding-top: 1.5rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; }
+  .footer-bottom p { font-size: 0.75rem; color: var(--muted); }
+  .social-links { display: flex; gap: 1rem; }
+  .social-links a { font-size: 1.2rem; color: var(--muted); text-decoration: none; transition: all 0.25s;  width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; border: 1px solid rgba(201,168,76,0.2); border-radius: 50%;}
+  .social-links a:hover { color: var(--gold); transform: translateY(-2px); }
+
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes scrollPulse { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
+
+  @media (max-width: 900px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { display: none; }
+    .service-detail-inner, .about-grid, .quote-wrap { grid-template-columns: 1fr; gap: 2.5rem; }
+    .about-img-wrap { display: none; }
+    .form-row { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 600px) { section, .service-detail { padding: 4rem 1.2rem; } }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#top" class="nav-logo">MG <span>Trip Planners</span></a>
+  <ul class="nav-links">
+    <li><a href="#services">Services</a></li>
+    <li><a href="#visa">Visas</a></li>
+    <li><a href="#packages">Packages</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#quote">Contact</a></li>
+  </ul>
+  <a href="#quote" class="nav-cta">Get a Quote</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="top">
+  <div>
+    <div class="hero-badge">✦ Your Trusted Travel Partner Since 2024</div>
+    <h1>Journey Beyond<br>the <em>Ordinary</em></h1>
+    <p>From visa assistance to luxury holiday packages — MG Trip Planners crafts seamless travel experiences tailored just for you.</p>
+    <div class="hero-btns">
+      <a href="#quote" class="btn-primary">Request a Quote</a>
+      <a href="#services" class="btn-outline">Our Services</a>
+    </div>
+  </div>
+  <div class="hero-scroll">
+    <span>Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats">
+  <div class="stat-item"><span class="stat-num">5000+</span><span class="stat-label">Happy Travellers</span></div>
+  <div class="stat-item"><span class="stat-num">50+</span><span class="stat-label">Countries Covered</span></div>
+  <div class="stat-item"><span class="stat-num">5+</span><span class="stat-label">Years Experience</span></div>
+  <div class="stat-item"><span class="stat-num">100+</span><span class="stat-label">Group Trips Done</span></div>
+</div>
+
+<!-- SERVICES OVERVIEW -->
+<section id="services">
+  <div class="section-inner">
+    <span class="section-tag">✦ What We Offer</span>
+    <h2 class="section-title">Curated <em>Travel</em> Services</h2>
+    <p class="section-sub">Everything you need for a perfect trip — handled by experts who love to travel as much as you do.</p>
+    <div class="services-grid">
+      <div class="service-card" onclick="scrollToSection('visa')">
+        <div class="service-icon">🛂</div>
+        <h3>Tourist Visas</h3>
+        <p>Hassle-free visa processing for all major destinations. We handle documentation, applications, and follow-ups.</p>
+        <span class="service-arrow">Learn More →</span>
+      </div>
+      <div class="service-card" onclick="scrollToSection('airtickets')">
+        <div class="service-icon">✈️</div>
+        <h3>Air Ticketing</h3>
+        <p>Best fares on domestic and international flights. We compare across airlines to get you the most value.</p>
+        <span class="service-arrow">Learn More →</span>
+      </div>
+      <div class="service-card" onclick="scrollToSection('packages')">
+        <div class="service-icon">🏝️</div>
+        <h3>Holiday Packages</h3>
+        <p>Thoughtfully curated packages for couples, families, and solo travellers — all fully customizable.</p>
+        <span class="service-arrow">Learn More →</span>
+      </div>
+      <div class="service-card" onclick="scrollToSection('hotels')">
+        <div class="service-icon">🏨</div>
+        <h3>Hotel Booking</h3>
+        <p>Handpicked accommodations from budget-friendly stays to luxury resorts, matched to your preferences.</p>
+        <span class="service-arrow">Learn More →</span>
+      </div>
+      <div class="service-card" onclick="scrollToSection('groups')">
+        <div class="service-icon">👥</div>
+        <h3>Group Bookings</h3>
+        <p>Seamless management for corporate trips, school tours, pilgrimage groups, and family reunions.</p>
+        <span class="service-arrow">Learn More →</span>
+      </div>
+      <div class="service-card" onclick="scrollToSection('cruise')">
+        <div class="service-icon">🚢</div>
+        <h3>Cruise Booking</h3>
+        <p>Exclusive cruise packages across the Mediterranean, Caribbean, and Asia with unbeatable deals.</p>
+        <span class="service-arrow">Learn More →</span>
+      </div>
+      <div class="service-card" onclick="scrollToSection('insurance')">
+        <div class="service-icon">🛡️</div>
+        <h3>Travel Insurance</h3>
+        <p>Comprehensive protection covering medical emergencies, cancellations, lost baggage, and more.</p>
+        <span class="service-arrow">Learn More →</span>
+      </div>
+      <div class="service-card" onclick="scrollToSection('quote')">
+        <div class="service-icon">🌐</div>
+        <h3>Custom Itineraries</h3>
+        <p>Have a dream destination? Tell us and we'll plan every detail — flights, hotels, transfers, activities.</p>
+        <span class="service-arrow">Contact Us →</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="gold-divider"></div>
+
+<!-- VISA -->
+<div class="service-detail sd-odd" id="visa">
+  <div class="service-detail-inner">
+    <div class="service-detail-img-wrap">
+      <img class="service-detail-img" src="https://images.unsplash.com/photo-1655722725332-9925c96dd627?w=800&q=80" alt="Tourist Visas" loading="lazy">
+    </div>
+    <div>
+      <p class="sd-label">Tourist Visas</p>
+      <h2>Smooth <em>Visa</em> Processing,<br>Every Time</h2>
+      <p class="sd-desc">Navigating visa applications can be stressful — but it doesn't have to be. Our experienced visa counsellors guide you through every step, from documentation checklists to submission and tracking, ensuring a high approval rate for all major destinations.</p>
+      <ul class="sd-features">
+        <li>Schengen, UAE, UK, USA, Canada, Australia & 50+ country visas</li>
+        <li>Complete documentation assistance & checklist guidance</li>
+        <li>Application submission, tracking, and follow-up</li>
+        <li>Express visa processing for urgent travel</li>
+        <li>Business, tourist, student, and transit visas</li>
+        <li>High approval rate with expert counselling</li>
+      </ul>
+      <a href="#quote" class="btn-gold">Apply for a Visa →</a>
+    </div>
+  </div>
+</div>
+
+<!-- AIR TICKETING -->
+<div class="service-detail sd-even" id="airtickets">
+  <div class="service-detail-inner" style="direction:rtl;">
+    <div class="service-detail-img-wrap" style="direction:ltr;">
+      <img class="service-detail-img" src="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=800&q=80" alt="Air Ticketing" loading="lazy">
+    </div>
+    <div style="direction:ltr;">
+      <p class="sd-label">Air Ticketing</p>
+      <h2>Best Fares, <em>Best Routes</em>,<br>Best Experience</h2>
+      <p class="sd-desc">We source the most competitive airfares across all major airlines and alliances. Whether it's a quick domestic hop or a multi-city international itinerary, our ticketing experts find you the smartest routing at the best price.</p>
+      <ul class="sd-features">
+        <li>Domestic & international flights across all airlines</li>
+        <li>Multi-city and complex itinerary planning</li>
+        <li>Business, first class & economy bookings</li>
+        <li>Lowest fare guarantee with flexible date options</li>
+        <li>Special fares for seniors, students & infants</li>
+        <li>Group booking discounts on bulk tickets</li>
+      </ul>
+      <a href="#quote" class="btn-gold">Book a Flight →</a>
+    </div>
+  </div>
+</div>
+
+<!-- HOLIDAY PACKAGES -->
+<div class="service-detail sd-odd" id="packages">
+  <div class="service-detail-inner">
+    <div class="service-detail-img-wrap">
+      <img class="service-detail-img" src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=80" alt="Holiday Packages" loading="lazy">
+    </div>
+    <div>
+      <p class="sd-label">Holiday Packages</p>
+      <h2>Holidays Crafted<br>With <em>Heart</em></h2>
+      <p class="sd-desc">From romantic getaways in Europe to family adventures in Southeast Asia, our holiday packages take care of every detail — flights, transfers, hotels, sightseeing, and more. You just show up and enjoy.</p>
+      <ul class="sd-features">
+        <li>Honeymoon, family, solo & group packages</li>
+        <li>Popular: Dubai, Europe, Thailand, Maldives, Bali & more</li>
+        <li>All-inclusive packages with guided tours available</li>
+        <li>Budget, standard, and luxury tiers to suit every wallet</li>
+        <li>Fully customizable itineraries — change anything, anytime</li>
+        <li>24/7 on-trip support from our dedicated team</li>
+      </ul>
+      <a href="#quote" class="btn-gold">Explore Packages →</a>
+    </div>
+  </div>
+</div>
+
+<!-- HOTEL BOOKING -->
+<div class="service-detail sd-even" id="hotels">
+  <div class="service-detail-inner" style="direction:rtl;">
+    <div class="service-detail-img-wrap" style="direction:ltr;">
+      <img class="service-detail-img" src="https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=800&q=80" alt="Hotel Booking" loading="lazy">
+    </div>
+    <div style="direction:ltr;">
+      <p class="sd-label">Hotel Booking</p>
+      <h2>Stay in <em>Comfort</em>,<br>Stay in Style</h2>
+      <p class="sd-desc">We have partnerships with thousands of hotels worldwide — from cozy boutique properties to five-star resorts. Tell us your destination, travel style, and budget, and we'll find you the perfect place to stay.</p>
+      <ul class="sd-features">
+        <li>3-star to 5-star hotels, resorts & boutique stays</li>
+        <li>Negotiated rates lower than online booking portals</li>
+        <li>Breakfast, half-board & full-board options</li>
+        <li>Airport transfer arrangements included on request</li>
+        <li>Early check-in / late check-out coordination</li>
+        <li>Special upgrades for honeymooners & anniversaries</li>
+      </ul>
+      <a href="#quote" class="btn-gold">Book a Hotel →</a>
+    </div>
+  </div>
+</div>
+
+<!-- GROUP BOOKINGS -->
+<div class="service-detail sd-odd" id="groups">
+  <div class="service-detail-inner">
+    <div class="service-detail-img-wrap">
+      <img class="service-detail-img" src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=800&q=80" alt="Group Bookings" loading="lazy">
+    </div>
+    <div>
+      <p class="sd-label">Group Bookings</p>
+      <h2>Travel Together,<br><em>Stress-Free</em></h2>
+      <p class="sd-desc">Coordinating travel for a large group is complex — but we make it effortless. From managing multiple visas to coordinating hotel blocks and group meals, we handle every logistical detail so your group simply enjoys the journey.</p>
+      <ul class="sd-features">
+        <li>Corporate retreats, incentive trips & MICE travel</li>
+        <li>School & college educational tours</li>
+        <li>Religious & pilgrimage tours (Char Dham, Hajj, Umrah)</li>
+        <li>Family reunion & wedding destination packages</li>
+        <li>Dedicated group coordinator assigned to your trip</li>
+        <li>Special group discounts on flights, hotels & activities</li>
+      </ul>
+      <a href="#quote" class="btn-gold">Plan a Group Trip →</a>
+    </div>
+  </div>
+</div>
+
+<!-- CRUISE -->
+<div class="service-detail sd-even" id="cruise">
+  <div class="service-detail-inner" style="direction:rtl;">
+    <div class="service-detail-img-wrap" style="direction:ltr;">
+      <img class="service-detail-img" src="https://images.unsplash.com/photo-1548574505-5e239809ee19?w=800&q=80" alt="Cruise Booking" loading="lazy">
+    </div>
+    <div style="direction:ltr;">
+      <p class="sd-label">Cruise Booking</p>
+      <h2>Sail Into<br><em>Extraordinary</em> Horizons</h2>
+      <p class="sd-desc">Experience the world from the water. We partner with leading cruise lines to offer exclusive packages across the most breathtaking routes — complete with shore excursions, dining packages, and cabin upgrades.</p>
+      <ul class="sd-features">
+        <li>Mediterranean, Caribbean, Alaska & Asia Pacific routes</li>
+        <li>Partners: Costa, MSC, Royal Caribbean, Norwegian & more</li>
+        <li>Cabin categories from interior to luxury suites</li>
+        <li>Shore excursion planning at every port of call</li>
+        <li>Pre- and post-cruise hotel stay arrangements</li>
+        <li>Exclusive group & family cruise discounts</li>
+      </ul>
+      <a href="#quote" class="btn-gold">Book a Cruise →</a>
+    </div>
+  </div>
+</div>
+
+<!-- TRAVEL INSURANCE -->
+<div class="service-detail sd-odd" id="insurance">
+  <div class="service-detail-inner">
+    <div class="service-detail-img-wrap">
+      <img class="service-detail-img" src="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=800&q=80" alt="Travel Insurance" loading="lazy">
+    </div>
+    <div>
+      <p class="sd-label">Travel Insurance</p>
+      <h2>Travel with <em>Complete</em><br>Peace of Mind</h2>
+      <p class="sd-desc">Unexpected situations can arise anywhere in the world — a medical emergency, a cancelled flight, or lost luggage. Our travel insurance plans ensure you're fully protected no matter where life takes you, with 24/7 global assistance.</p>
+      <ul class="sd-features">
+        <li>Medical emergency & hospitalisation coverage worldwide</li>
+        <li>Trip cancellation & interruption protection</li>
+        <li>Lost, delayed or damaged baggage reimbursement</li>
+        <li>Flight delay & missed connection compensation</li>
+        <li>Personal accident & liability coverage</li>
+        <li>Plans for individuals, families & senior citizens</li>
+      </ul>
+      <a href="#quote" class="btn-gold">Get Insured Today →</a>
+    </div>
+  </div>
+</div>
+
+<div class="gold-divider"></div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-inner">
+    <div class="about-grid">
+      <div class="about-img-wrap">
+        <img class="about-img" src="https://images.unsplash.com/photo-1530521954074-e64f6810b32d?w=700&q=80" alt="About MG Trip Planners" loading="lazy">
+        <div class="about-img-accent">
+          <span>5+</span>
+          <span>Years of Excellence in Travel</span>
+        </div>
+      </div>
+      <div>
+        <span class="section-tag">✦ About Us</span>
+        <h2 class="section-title">Crafting <em>Journeys</em> With Passion</h2>
+        <p style="font-size:0.95rem; color:var(--muted); line-height:1.75; margin-bottom:1.2rem;">MG Trip Planners is a trusted travel agency based in Patiala, Punjab, specializing in personalized travel experiences across the globe. Founded by Mohit Garg and Abhishek Mangla, we have helped thousands of travellers explore the world with ease and confidence.</p>
+        <p style="font-size:0.95rem; color:var(--muted); line-height:1.75; margin-bottom:2rem;">Whether you're planning your first international trip, a family holiday, or a corporate retreat, our team brings expert knowledge, extensive networks, and genuine care to every booking.</p>
+        <div class="about-team">
+          <p style="font-size:0.72rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--gold); margin-bottom:1.2rem;">Our Founders</p>
+          <div class="team-row">
+            <div class="team-member">
+              <h4>Mohit Garg</h4>
+              <p>Co-Founder</p>
+              <a href="tel:+16475514760">+1 647 551 4760</a>
+              <a href="tel:+12897782884">+1 289 778 2884</a>
+            </div>
+            <div class="team-member">
+              <h4>Abhishek Mangla</h4>
+              <p>Co-Founder</p>
+              <a href="tel:+918195957004">+91 81959-57004</a>
+              <a href="tel:+919878851400">+91 98788-51400</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- QUOTE FORM -->
+<section id="quote">
+  <div class="section-inner">
+    <div class="quote-wrap">
+      <div>
+        <span class="section-tag">✦ Get In Touch</span>
+        <h2 class="section-title">Plan Your <em>Dream</em> Trip</h2>
+        <p style="font-size:0.95rem; color:var(--muted); line-height:1.75; margin-bottom:2rem;">Fill out the form and our travel experts will get back to you within 24 hours with a personalised quote. No obligation, just great travel advice.</p>
+        <div class="contact-item"><div class="contact-dot"></div><span><strong>Phone / WhatsApp</strong>98788-60500 &nbsp;|&nbsp; 98788-51400</span></div>
+        <div class="contact-item"><div class="contact-dot"></div><span><strong>Email</strong>info@mgtripplanners.com<br>mgtripplanners@gmail.com</span></div>
+        <div class="contact-item"><div class="contact-dot"></div><span><strong>Office</strong>SCO-6, Saggu Marble Scheme, Sheran Wala Gate<br>Patiala 147001, Punjab</span></div>
+        <div class="contact-item"><div class="contact-dot"></div><span><strong>Website</strong>mgtripplanners.com</span></div>
+      </div>
+      <div class="quote-form">
+        <div id="formContent">
+          <p class="form-title">Request a Quote</p>
+          <p class="form-sub">Tell us about your trip and we'll craft a plan for you.</p>
+          <div class="form-row">
+            <div class="form-group"><label>Full Name *</label><input type="text" id="fname" placeholder="Your full name"></div>
+            <div class="form-group"><label>Phone / WhatsApp *</label><input type="tel" id="phone" placeholder="+91 XXXXX XXXXX"></div>
+          </div>
+          <div class="form-group"><label>Email Address</label><input type="email" id="email" placeholder="your@email.com"></div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Service Required *</label>
+              <select id="service">
+                <option value="" disabled selected>Select a service</option>
+                <option>Tourist Visa</option>
+                <option>Air Ticketing</option>
+                <option>Holiday Package</option>
+                <option>Hotel Booking</option>
+                <option>Group Booking</option>
+                <option>Cruise Booking</option>
+                <option>Travel Insurance</option>
+                <option>Custom Itinerary</option>
+              </select>
+            </div>
+            <div class="form-group"><label>Destination</label><input type="text" id="destination" placeholder="e.g. Dubai, Europe, Thailand"></div>
+          </div>
+          <div class="form-row">
+            <div class="form-group"><label>Travel Date</label><input type="date" id="travelDate"></div>
+            <div class="form-group">
+              <label>No. of Travellers</label>
+              <select id="travellers">
+                <option>1 Person</option><option>2 Persons</option><option>3–5 Persons</option><option>6–10 Persons</option><option>10+ Persons (Group)</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Budget Range (per person)</label>
+            <select id="budget">
+              <option value="" disabled selected>Select your budget</option>
+              <option>Under ₹25,000</option><option>₹25,000 – ₹50,000</option><option>₹50,000 – ₹1,00,000</option><option>₹1,00,000 – ₹2,00,000</option><option>₹2,00,000+</option>
+            </select>
+          </div>
+          <div class="form-group"><label>Additional Requirements</label><textarea id="message" placeholder="Tell us about your trip preferences, special requests, or any questions..."></textarea></div>
+          <div class="form-check">
+            <input type="checkbox" id="whatsapp" checked>
+            <label for="whatsapp">I prefer to be contacted on WhatsApp for faster responses.</label>
+          </div>
+          <button class="submit-btn" onclick="submitForm()">Send My Quote Request →</button>
+        </div>
+        <div class="form-success" id="formSuccess">
+          <div class="checkmark">✦</div>
+          <h3>Request Received!</h3>
+          <p>Thank you for reaching out to MG Trip Planners. Our team will contact you within 24 hours with a personalised quote.<br><br>For urgent queries, WhatsApp us at <strong style="color:var(--gold);">98788-60500</strong>.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div><div class="footer-logo">MG <span>Trip Planners</span><small>Patiala, Punjab — India</small></div></div>
+      <div class="footer-links">
+        <a href="#services">Services</a>
+        <a href="#visa">Visas</a>
+        <a href="#airtickets">Flights</a>
+        <a href="#packages">Packages</a>
+        <a href="#groups">Groups</a>
+        <a href="#cruise">Cruises</a>
+        <a href="#about">About</a>
+        <a href="#quote">Get a Quote</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2024 MG Trip Planners. All rights reserved. &nbsp;|&nbsp; Patiala, Punjab, India</p>
+      <div class="social-links">
+        <a href="https://wa.me/919878851400" target="_blank"><i class="fab fa-whatsapp"></i></a>
+        <a href="mailto:mgtripplanners@gmail.com"><i class="fas fa-envelope"></i></a>
+        <a href="https://instagram.com/MG_Tripplanners" target="_blank"><i class="fab fa-instagram"></i></a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+function scrollToSection(id) {
+  document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+}
+
+function submitForm() {
+  const name = document.getElementById('fname').value.trim();
+  const phone = document.getElementById('phone').value.trim();
+  const service = document.getElementById('service').value;
+  if (!name || !phone || !service) {
+    alert('Please fill in your name, phone number, and the service you need.');
+    return;
+  }
+  document.getElementById('formContent').style.display = 'none';
+  document.getElementById('formSuccess').style.display = 'block';
+}
+
+// Scroll reveal
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.style.opacity = '1'; e.target.style.transform = 'translateY(0)'; }
+  });
+}, { threshold: 0.08 });
+
+document.querySelectorAll('.service-card, .stat-item, .service-detail-inner > div, .service-detail-img-wrap').forEach(el => {
+  el.style.opacity = '0';
+  el.style.transform = 'translateY(22px)';
+  el.style.transition = 'opacity 0.55s ease, transform 0.55s ease, background 0.3s';
+  if (window.innerWidth > 768) {
+  observer.observe(el);
+} else {
+  el.style.opacity = '1';
+  el.style.transform = 'none';
+}
+});
+</script>
+</body>
+</html>
